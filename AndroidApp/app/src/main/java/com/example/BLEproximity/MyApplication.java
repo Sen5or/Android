@@ -22,14 +22,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import android.os.AsyncTask;
+import 	android.os.SystemClock;
 import android.util.Log;
 
 
 public class MyApplication extends Application {
 
-    private int counter = 0;
     private double avg = 0;
-    private int[] array = new int[3];
     private boolean flag = false;
     private BeaconManager beaconManager;
     private String myIP;
@@ -62,17 +61,19 @@ public class MyApplication extends Application {
                     avg = Math.abs(list.get(0).getRssi());
 
                     if (avg <= 80 && !flag) {
-                        //showNotification("Nearby mirror detected.", "Login using your voice or face");
                         sendGetRequest();
+                        SystemClock.sleep(7000);
                         flag = true;
-                        showNotification("Near Proximity is ", String.valueOf(avg));
+                        //showNotification("Near Proximity is ", String.valueOf(avg));
+                        showNotification("Nearby mirror detected.", "Login using your voice or face");
                     }
-                    /*
                     else if (avg > 80 && flag){
                         sendGetRequest();
-                        showNotification("Far Proximity is ", String.valueOf(avg));
-                        //showNotification("Mirror out of range, logging off", "");
-                    }*/
+                        SystemClock.sleep(7000);
+                        flag = false;
+                        //showNotification("Far Proximity is ", String.valueOf(avg));
+                        showNotification("Mirror out of range, logging off", "");
+                    }
 
                 }
 
@@ -157,26 +158,35 @@ public class MyApplication extends Application {
             try {
 
                 myIP = getIPFromArpCache("b8:27:eb:ab:cd:a7");
-                String ip = "";
+                String ip;
                 if (myIP == "NULL IP") {
                     showNotification("NULL IP", "");
-                    ip = "http://192.168.2.18";
+                    ip = "http://192.168.2.17";
                 }
                 else{ ip = "http://" + myIP; }
+
+                //Append port at the end of IP address depending on screen on/off
+                //Flag means Screen is on. 1025 to turn off, 1024 to turn on
+                if (flag){ ip += ":8080"; }
+                else { ip += ":80"; }
+
+                //showNotification(ip, "Dist is "+String.valueOf(avg)+" Flag is "+String.valueOf(flag));
 
                 URL url = new URL(ip);
 
                 HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+
                 //String urlParameters = "fizz=buzz";
                 connection.setRequestMethod("GET");
                 connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
                 connection.setRequestProperty("ACCEPT-LANGUAGE", "en-US,en;0.5");
 
                 int responseCode = connection.getResponseCode();
-                Log.d("resp", String.valueOf(responseCode));
+                //Log.d("resp", String.valueOf(responseCode));
 
             } catch (MalformedURLException e) {
                 // TODO Auto-generated catch block
+                showNotification("Malformed URL","");
                 e.printStackTrace();
             } catch (IOException e) {
                 // TODO Auto-generated catch block
