@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     //Log.d(TAG, "getProximityUUID: " + ((Beacon) beacons.get(0)).getProximityUUID());
 
 
-                    rssiSignalTextview.setText(""+rssiSignal);
+                    rssiSignalTextview.setText("" + rssiSignal);
 
                     //Lower RSSI means stronger signal
 
@@ -96,9 +96,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
 
 
-                }
-                else{
-                    rssiSignalTextview.setText(""+-1);
+                } else {
+                    rssiSignalTextview.setText("" + -1);
                 }
 
 
@@ -134,72 +133,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        /** From Application */
-
-        /*
-
-        beaconManager.setMonitoringListener(new BeaconManager.MonitoringListener() {
-            @Override
-            public void onEnteredRegion(Region region, List<Beacon> list) {
-                beaconManager.startRanging(region);
-            }
-
-            @Override
-            public void onExitedRegion(Region region) {
-                beaconManager.stopRanging(region);
-            }
-        });
-
-
-        beaconManager.setRangingListener(new BeaconManager.RangingListener() {
-
-            @Override
-            public void onBeaconsDiscovered(Region region, List<Beacon> list) {
-
-                System.out.println("Beacon discovered: ");
-
-                //System.out.println("region: "+region);
-                //System.out.println("list: " + list);
-
-
-                if (!list.isEmpty()) {
-
-                    System.out.println("Beacon nearby: "+list.get(0));
-
-                    avg = Math.abs(list.get(0).getRssi());
-
-                    if (avg <= 80 && !flag) {
-                        System.out.println("Sending On request");
-                        //new SendHttpRequestAsync(MainActivity.this).execute("On");
-                        SystemClock.sleep(7000);
-                        flag = true;
-                        //showNotification("Near Proximity is ", String.valueOf(avg));
-                        //showNotification("Nearby mirror detected.", "Login using your voice or face");
-                    } else if (avg > 80 && flag) {
-                        System.out.println("Sending off request");
-                        //new SendHttpRequestAsync(MainActivity.this).execute("Off");
-                        SystemClock.sleep(7000);
-                        flag = false;
-                        //showNotification("Far Proximity is ", String.valueOf(avg));
-                        //showNotification("Mirror out of range, logging off", "");
-                    }
-
-                }
-
-            }
-        });
-
-
-        beaconManager.connect(new BeaconManager.ServiceReadyCallback() {
-            @Override
-            public void onServiceReady() {
-                beaconManager.startMonitoring(myRegion);
-            }
-        });
-*/
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
@@ -284,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
 
-        if(view == ipSubmitButton){
+        if (view == ipSubmitButton) {
             IpAddressToSendTo = ipAddressInput.getText().toString();
         }
     }
@@ -305,10 +238,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 //System.out.println("Async param: "+params[0]);
 
-                String urlString = "http://"+IpAddressToSendTo+":8080/"+params[0];
+                String urlString = "http://" + IpAddressToSendTo + ":8080/" + params[0];
 
 
-                if(!IpAddressToSendTo.equalsIgnoreCase("")) {
+                if (!IpAddressToSendTo.equalsIgnoreCase("")) {
 
                     URL url = new URL(urlString);
 
@@ -321,7 +254,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } else {
 
                 }
-
 
 
             } catch (IOException e) {
